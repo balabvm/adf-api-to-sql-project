@@ -1,6 +1,69 @@
 {
 	"name": "API_to_SQL_Master",
 	"properties": {
+		"activities": [
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [
+					{
+						"name": "Source",
+						"value": "products"
+					},
+					{
+						"name": "Destination",
+						"value": "dbo.Products_Staging"
+					}
+				],
+				"typeProperties": {
+					"source": {
+						"type": "RestSource",
+						"httpRequestTimeout": "00:01:40",
+						"requestInterval": "00.00:00:00.010",
+						"requestMethod": "GET",
+						"paginationRules": {
+							"supportRFC5988": "true"
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "ds_REST_API_Products",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "azuresqlapidata",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"parameters": {
+			"controlQuery": {
+				"type": "string",
+				"defaultValue": "SELECT ApiName, ApiUrl, TargetTable FROM API_Control WHERE IsActive = 1;"
+			},
+			"pipelineName": {
+				"type": "string",
+				"defaultValue": "API_to_SQL_Master"
+			}
+		},
 		"annotations": []
 	}
 }
