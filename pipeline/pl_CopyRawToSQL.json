@@ -1,0 +1,7 @@
+{
+	"name": "pl_CopyRawToSQL",
+	"properties": {
+		"description": "ADF Copy Data Pipeline with parameter",
+		"annotations": []
+	}
+}
